@@ -1,0 +1,25 @@
+simulationTime=2000000
+numClients=100
+numServers=3
+printLevel=2
+execDists=CONSTANT
+executionAverages=1.0
+clientsArrivalRates=10
+serversServiceRate=8 8 8
+learningAlgorithms= MFQ
+learningParameters=0.1 
+averageServiceTimeRate=0.98
+averageWaitTimeRate=0.98 
+averageLatencyRate=0.98 
+samplingInterval=10
+rewardEpsilon=0.05
+percent=99.0
+alpha_theta=0.1
+batchSize=100.0
+momentumParameter=0.9
+RMSParameter=0.999
+normalizationFactor=10000
+discountFactor=0.99
+capacity=40
+Beta=1.0
+
