@@ -33,7 +33,7 @@ int MFQ::predict(){
     double max_Q = 0.0;
 
     for(int i=0; i<numOfChoices; i++){
-        index += (state[i]*capacity - 1.0)*pow(capacity,i);
+        index += state[i]*(capacity - 1.0)*IntPower(capacity,i);
     }
     
     vector<double> temp1;
@@ -120,7 +120,7 @@ void MFQ::updateF(int time, vector<double> mean_action, int numPackets) {
     
     int index = 0;
     for(int i=0; i<numOfChoices; i++){
-        index += (previous_state[i]*capacity - 1.0)*pow(capacity,i);
+        index += (previous_state[i]*(capacity - 1.0))*IntPower(capacity,i);
     }
     
     double temp = 0.0;
@@ -146,8 +146,8 @@ void MFQ::updateGradientSum(double reward, int choice){
     double Q_previous = 0.0;
     
     for(int i=0; i<numOfChoices; i++){
-        index += (state[i]*capacity - 1.0)*pow(capacity,i);
-        index_previous += (previous_state[i]*capacity - 1.0)*pow(capacity,i);
+        index += (state[i])*(capacity - 1.0)*IntPower(capacity,i);
+        index_previous += (previous_state[i])*(capacity - 1.0)*IntPower(capacity,i);
     }
 
     vector<double> temp3;

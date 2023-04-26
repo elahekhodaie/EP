@@ -8,6 +8,8 @@
 #ifndef header_hpp
 #define header_hpp
 
+
+#include <algorithm>
 #include <stdio.h>
 #include <iostream>
 #include <random>
@@ -102,6 +104,19 @@ protected:
     vector<double> probability;
 };
 
+int constexpr IntPower(const int x, const int p)
+{
+  if (p == 0) return 1;
+  if (p == 1) return x;
+
+  int tmp = IntPower(x, p/2);
+  if ((p % 2) == 0) { 
+    return tmp * tmp; 
+  }
+  else { return x * tmp * tmp; }
+}
+
+
 
 class MFQ: public Learning{
 public:
@@ -136,21 +151,21 @@ public:
         assert(state.size()==numOfChoices);
     
         
-        f = new double*[pow(capacity,numOfChoices)];
+        f = new double*[IntPower(capacity,numOfChoices)];
         
-        for(int i = 0; i<pow(capacity,numOfChoices); i++){
+        for(int i = 0; i<IntPower(capacity,numOfChoices); i++){
             f[i] = new double[numOfChoices];
         }
         
-        for(int i = 0; i<pow(capacity,numOfChoices); i++){
+        for(int i = 0; i<IntPower(capacity,numOfChoices); i++){
             for(int j=0; j<numOfChoices; j++){
                 f[i][j] = 1.0/numOfChoices;
             }
         }
         
         
-        if (fAdded==false) theta_size = pow(numOfChoices,2) + 1;
-        else if (fAdded==true) theta_size = pow(numOfChoices,3) + pow(numOfChoices,2) + 1;
+        if (fAdded==false) theta_size = IntPower(numOfChoices,2) + 1;
+        else if (fAdded==true) theta_size = IntPower(numOfChoices,3) + IntPower(numOfChoices,2) + 1;
 
         theta.resize(theta_size, 0.0);
         V_adam.resize(theta_size, 0.0);

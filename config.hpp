@@ -7,12 +7,15 @@
 
 #ifndef config_h
 #define config_h
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <unordered_map>
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <istream>
+#include <iterator>
  
 using namespace std;
 
