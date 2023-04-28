@@ -223,7 +223,7 @@ public:
     bool getAdam() override;
     
 private:
-    bool Adam = false;
+    bool Adam = true;
     bool fAdded = false;
     int numOfClients;
     int id;

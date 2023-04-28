@@ -59,10 +59,12 @@ int MFQ::predict(){
     for (int i=0; i<numOfChoices; i++){
         Q = 0.0;
         vector<double> temp = getBasis(i, state, temp1);
+        
         for (int j=0; j<theta_size; j++){
             Q += theta[j] * temp[j];
+        
         }
-
+        
         probability[i] = exp(Beta * (Q - max_Q +100.0));
         exp_sum += probability[i];
     }
@@ -218,9 +220,7 @@ void MFQ::updateGradientSum(double reward, int choice){
     assert(temp2.size()==theta_size);
 
     delta = reward + discount_factor * v - Q_previous;
-//    cout<<"delta: "<<delta<<endl;
-    
-//    if (this->getID()==0) cout<< delta << "..." << reward << "... "<<v << ":" << Q_previous <<endl;
+    //cout<< delta << "..." << reward << "... "<<v << ":" << Q_previous <<endl;
     
     if(Adam==false){
         for (int i=0; i<theta_size; i++){
@@ -234,6 +234,7 @@ void MFQ::updateGradientSum(double reward, int choice){
             mAdam[i] = momentumParameter * mAdam[i] + (1.0 - momentumParameter) * ((-1.0) * delta * (2.0/batchSize) *  temp2[i]);
             vAdam[i] = rmsParameter * vAdam[i] + (1.0 - rmsParameter) * pow(delta * (2.0/batchSize) *  temp2[i],2);
             theta[i] = theta[i] - 0.001 * mAdam[i]/(sqrt(vAdam[i])+pow(10,-8));
+
             
 //            if (this->getID()==0) cout<<"adam" << i << ":::"<<mAdam[i]<<endl;
 //            if (this->getID()==0) cout<<"theta" << i << ":::"<<theta[i]<<endl;
@@ -686,7 +687,15 @@ void Simulator::testRun1(int configIndex){
 void Simulator::testRun2(int configIndex){
     
     int currentInterval = 0;
-    
+    state[0] = 0.0;
+    state[1] = 0.1;
+
+    for(int i=0; i<numClients; i++) listOfClients[i]->getLearner()->setState(state);
+
+    state[0] = 1.0;
+    state[1] = 0.0;
+
+
     for(current_time=0; current_time<simulationTime; current_time++){
         cout << "\n\n\n" << endl;
         double mean_prob_s1_a1 = 0.0;
@@ -702,7 +711,8 @@ void Simulator::testRun2(int configIndex){
             choiceBuffer[i] = 0;
         }
         
-        for(int i=0; i<numServers; i++) mean_action[i] = 0.0;
+        for(int i=0; i<numServers; i++) 
+            mean_action[i] = 0.0;
 
         
         for(int i =0; i<numClients; i++){
@@ -764,10 +774,10 @@ void Simulator::testRun2(int configIndex){
                     if(listOfClients[i]->getPacketReceived()) {
                         rewardBuffer[i] = 100.0;
                         listOfClients[i]->getLearner()->setReward(100.0);
-                }
+                    }
 
-          }
-        }
+                }
+            }
             
             if(tempp != numRecievedPackets){
                 cout << "!!" << endl;
@@ -869,6 +879,11 @@ void Simulator::testRun2(int configIndex){
         cout<<"Client 1, server 1 prob: "<<listOfClients[0]->getLearner()->getProbabilities()[0]<<", Client 1, server 2 prob: "<<listOfClients[0]->getLearner()->getProbabilities()[1]<<endl;
         cout<<"Client 2, server 1 prob: "<<listOfClients[1]->getLearner()->getProbabilities()[0]<<", Client 2, server 2 prob: "<<listOfClients[1]->getLearner()->getProbabilities()[1]<<endl;
         cout<<"Client 3, server 1 prob: "<<listOfClients[2]->getLearner()->getProbabilities()[0]<<", Client 3, server 2 prob: "<<listOfClients[2]->getLearner()->getProbabilities()[1]<<endl;
+
+        cout << "Reward" << listOfClients[0]->getLearner()->getReward() << endl;
+        cout << "Reward" << listOfClients[1]->getLearner()->getReward() << endl;
+        cout << "Reward" << listOfClients[2]->getLearner()->getReward() << endl;
+        
 //        cout<<"Client 4, server 1 prob: "<<listOfClients[3]->getLearner()->getProbabilities()[0]<<", Client 3, server 2 prob: "<<listOfClients[3]->getLearner()->getProbabilities()[1]<<endl;
 //        cout<<"Client 5, server 1 prob: "<<listOfClients[4]->getLearner()->getProbabilities()[0]<<", Client 3, server 2 prob: "<<listOfClients[4]->getLearner()->getProbabilities()[1]<<endl;
 //        cout<<"Client 6, server 1 prob: "<<listOfClients[5]->getLearner()->getProbabilities()[0]<<", Client 3, server 2 prob: "<<listOfClients[5]->getLearner()->getProbabilities()[1]<<endl;

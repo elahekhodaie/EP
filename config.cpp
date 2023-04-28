@@ -32,7 +32,7 @@ void Config::set(string key, string value) {
 }
 
 void Config::loadConfigFile(string file_name) {
-    string directory = "/Users/fatemehfardno/Desktop/code/discrete_simulator/discrete_simulator/Configfiles/";
+    string directory = "./";
     
     ifstream config_file(directory+file_name, ios::binary);
     if(config_file.is_open() == false){

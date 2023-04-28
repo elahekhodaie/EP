@@ -1,11 +1,11 @@
-simulationTime=2000000
+simulationTime=1000000
 numClients=100
 numServers=3
 printLevel=2
 execDists=CONSTANT
 executionAverages=1.0
 clientsArrivalRates=10
-serversServiceRate=8 8 8
+serversServiceRate=4 4 4
 learningAlgorithms= MFQ
 learningParameters=0.1 
 averageServiceTimeRate=0.98
